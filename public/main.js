@@ -18,5 +18,9 @@ $(document).ready(function() {
         input.val('');
     });
     socket.on('message', addMessage);
-    socket.on('connection', addMessage);
+    // var alertCurrentUsers = function(store){
+    //     addMessage(store.length);
+    // };
+    // socket.on('connection', addMessage);
+    socket.on('messageUser', addMessage)
 });

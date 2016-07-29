@@ -10,16 +10,20 @@ var io = socket_io(server);
 
 var count = 0;
 var first = '';
+var store = [];
 
 io.on('connection', function (socket) {
     count += 1;
     console.log('Client connected');
-    first = socket.id
+    store.push(socket.id);
     console.log(socket.id)
-    console.log(socket.adapter.nsp.adapter.rooms[first]);
-    // console.log(io.sockets.connected)
-    // console.log('count');
-    // console.log(count);
+    console.log(socket.adapter.nsp.adapter.rooms[socket.id]);
+    console.log('store'+store[0]);
+    socket.emit('messageUser', store);
+    socket.on('messageUser', function(store){
+        console.log('received store', store)
+        socket.broadcast.emit('messageUser', store)
+    })
     
     socket.on('message', function(message) {
         console.log('Received message:', message);
@@ -27,4 +31,4 @@ io.on('connection', function (socket) {
     });
 });
 
-server.listen(8080);
+server.listen(process.env.PORT || 8080);
